@@ -1,5 +1,5 @@
 from django.contrib import admin
-from catalog.models import Category, Product
+from .models import Category, Product
 
 # создали админку python manage.py createsuperuser
 # создали классы для отображения моделей в админке
@@ -18,4 +18,4 @@ class ProductAdmin(admin.ModelAdmin):
     """Отображает модели(таблицу) Продуктов в админке"""
     list_display = ('id', 'name', 'price', 'category',)
     list_filter = ('name', 'price', 'category',)
-    search_fields = ('id', 'name', 'category')
+    search_fields = ('id', 'name', 'category__name',)
