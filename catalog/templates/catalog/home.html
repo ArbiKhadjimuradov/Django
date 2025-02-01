@@ -9,6 +9,7 @@
     <p class="lead">BuyMarket-Это лучший супермаркет в грозном</p>
     {% if user.is_authenticated %}
     {% endif %}
+    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:product_create'%}">Создать</a>
 </div>
 
 {% endblock %}
