@@ -8,7 +8,7 @@ class ProductForm(ModelForm):
     """Класс создания формы добавления продуктов"""
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ('is_publication', 'owner')
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)

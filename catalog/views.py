@@ -3,7 +3,7 @@ from .forms import ProductForm
 from .models import Product
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView, UpdateView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # def index(request):
 #     return render(request, template_name='base.html')
@@ -43,19 +43,19 @@ class CatalogListView(ListView):
     context_object_name = "products"
 
 
-class CatalogDetailView(DetailView):
+class CatalogDetailView(LoginRequiredMixin, DetailView):
     """Класс представления полной информации о товаре, на отдельной странице"""
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
 
 
-class CatalogTemplateView(TemplateView):
+class CatalogTemplateView(LoginRequiredMixin, TemplateView):
     """Класс представления обратной связи с заполнением формы"""
     template_name = "catalog/contacts.html"
 
 
-class CatalogCreateView(CreateView):
+class CatalogCreateView(LoginRequiredMixin, CreateView):
     """контроллер Создание продукта"""
     model = Product
     template_name = "catalog/product_create.html"
@@ -64,7 +64,7 @@ class CatalogCreateView(CreateView):
     success_url = reverse_lazy('catalog:home')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер изменения продукта"""
     model = Product
     template_name = "catalog/product_create.html"
@@ -75,7 +75,7 @@ class ProductUpdateView(UpdateView):
         return reverse('catalog:product', args=[self.kwargs.get('pk')])
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """Контроллер удаления продукта"""
     model = Product
     context_object_name = "product_delete"
