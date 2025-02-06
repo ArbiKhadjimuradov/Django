@@ -32,7 +32,7 @@ class ProductForm(ModelForm):
         cleaned_data = super().clean()
         name = cleaned_data.get('name')
         description = cleaned_data.get('description')
-        banned_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+        banned_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'радар']
 
         for word in banned_words:
             if word in name.lower():
