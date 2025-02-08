@@ -1,7 +1,5 @@
 from django.core.cache import cache
-
 from config.settings import CACHE_ENABLED
-
 from .models import Product
 
 
@@ -23,7 +21,6 @@ class GetListProduct:
             return Product.objects.all()
         key = 'product_list'
         products = cache.get(key)
-
         if products is not None:
             return products
         products = Product.objects.all()

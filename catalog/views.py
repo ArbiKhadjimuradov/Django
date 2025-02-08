@@ -1,9 +1,13 @@
 from django.views.generic import ListView, DetailView, TemplateView
 from .forms import ProductForm
-from .models import Product
+from .models import Product, Category
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .service import GetListProduct, LoadProductCategory
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 # def index(request):
 #     return render(request, template_name='base.html')
@@ -42,7 +46,11 @@ class CatalogListView(ListView):
     template_name = "catalog/home.html"
     context_object_name = "products"
 
+    def get_queryset(self):
+        return GetListProduct.get_list_product_from_cache()
 
+
+@method_decorator(cache_page(60), name='dispatch')
 class CatalogDetailView(LoginRequiredMixin, DetailView):
     """Класс представления полной информации о товаре, на отдельной странице"""
     model = Product
@@ -80,3 +88,13 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     context_object_name = "product_delete"
     success_url = reverse_lazy("catalog:home")
+
+
+class ProductCategoryView(ListView):
+    """Класс представления категории продуктов"""
+    model = Product
+    template_name = "catalog/product_category.html"
+    context_object_name = 'product_category'
+
+    def get_queryset(self):
+        return LoadProductCategory.load_product_category(category_id=self.kwargs.get('pk'))
